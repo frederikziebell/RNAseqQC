@@ -1,3 +1,17 @@
+#' Get all gene IDs in a DESeqDataSet for a given gene name.
+#'
+#' @param gene_name A gene name
+#' @param dds A DESeqDataSet
+#'
+#' @return A character vector
+#' @examples
+#' get_gene_id("HBA1", T47D)
+#' @export
+get_gene_id <- function(gene_name, dds){
+  rowData(dds)[rowData(dds)$gene_name==gene_name,"gene_name",drop=FALSE]
+}
+
+
 #' Plot number of counts per sample and biotype
 #'
 #' Plot the total number of counts for each sample and the major classes of
@@ -11,10 +25,15 @@
 #' @export
 plot_biotypes <- function(dds) {
 
-  # prevent 'no visible binding for global variable' package warnings
-  gene_id <- sample_id <- rowData <- biotype <- count <- total_count <- NULL
+  # use alternative sizeFactor estimation, if
+  # every gene contains a zero count
+  if(all(rowSums(assay(dds)==0)>0)){
+    message("Every gene contains a zero count. Using slow size factor estimation type 'iterate'.")
+    dds <- DESeq2::estimateSizeFactors(dds, type="iterate")
+  } else {
+    dds <- DESeq2::estimateSizeFactors(dds)
+  }
 
-  dds <- DESeq2::estimateSizeFactors(dds)
 
   biotypes_df <- counts(dds, normalized = T) %>%
     as_tibble(rownames = "gene_id") %>%
@@ -25,7 +44,7 @@ plot_biotypes <- function(dds) {
         as_tibble(rownames = "gene_id") %>%
         mutate(biotype = dplyr::case_when(
           gene_biotype == "protein_coding" ~ "protein coding",
-          gene_biotype == "lncRNA" ~ "lncRNA",
+          gene_biotype %in% c("lncRNA","lincRNA") ~ "lncRNA",
           gene_biotype == "snRNA" ~ "snRNA",
           gene_biotype %in% c("Mt_rRNA", "Mt_tRNA") ~ "MT-RNA",
           str_detect(gene_biotype, "pseudogene") ~ "pseudogene",
@@ -47,12 +66,17 @@ plot_biotypes <- function(dds) {
     arrange(-sum) %>%
     pull(biotype)
 
+  pal_jco <- c(
+    "#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", "#7AA6DCFF",
+    "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF", "#4A6990FF"
+  )
+
   biotypes_df %>%
     ggplot(aes(sample_id, total_count, group = biotype, color = biotype)) +
     geom_point() +
     geom_line() +
     scale_y_log10(breaks = 10^(0:10)) +
-    ggsci::scale_color_jco(breaks = biotype_order) +
+    scale_color_manual(values = pal_jco, breaks = biotype_order) +
     labs(x = "sample ID", y = "total normalized count") +
     cowplot::theme_cowplot() +
     theme(
@@ -80,9 +104,6 @@ plot_biotypes <- function(dds) {
 #'
 #' @export
 plot_chromosome <- function(vsd, chr, scale = FALSE, trunc_val = NULL) {
-
-  # prevent 'no visible binding for global variable' package warnings
-  gene_id <- chromosome <- chr_start <- sample_id <- count <- log_count <- NULL
 
   chr_exp_mat <- assay(vsd) %>%
     as_tibble(rownames = "gene_id") %>%
@@ -164,15 +185,19 @@ plot_sample_clustering <- function(se, n_feats = 500, anno_vars = NULL, anno_tit
     mat <- as.matrix(dist(t(assay_mat)))
     color_name <- "euclidean\ndistance"
   } else if (distance %in% c("pearson", "spearman")) {
-    mat <- as.matrix(as.dist((1 - cor(assay_mat)) / 2))
+    mat <- as.matrix(as.dist((1 - cor(assay_mat, method = distance)) / 2))
     color_name <- paste0(distance, " corr.\ndistance")
   } else {
     stop("Type must be one of 'euclidean', 'pearson' or 'spearman'.")
   }
 
+  RColorBrewer_blues <- c(
+    "#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1", "#6BAED6",
+    "#4292C6", "#2171B5", "#08519C", "#08306B")
+
   ComplexHeatmap::Heatmap(
     mat,
-    col = circlize::colorRamp2(seq(0, max(mat), length.out = 9), rev(RColorBrewer::brewer.pal(9, "Blues"))),
+    col = circlize::colorRamp2(seq(0, max(mat), length.out = 9), rev(RColorBrewer_blues)),
     show_column_names = F,
     row_dend_width = grid::unit(.07, "npc"),
     column_dend_height = grid::unit(.07, "npc"),
@@ -229,7 +254,7 @@ save_plots_to_pdf <- function(plots, file="plots.pdf", ncol, nrow, subfig_width=
 
     grDevices::pdf(file=file, width=subfig_width*ncol, height=subfig_height*nrow)
     purrr::walk(1:pages, function(p) {
-      print(paste0("Page ",p,"/",pages))
+      message(paste0("Page ",p,"/",pages))
 
       if(legend_position %in% c("original","none")){
         print(

@@ -151,6 +151,13 @@ The package also provides wrappers for principal component analysis (PCA) to che
 plot_pca(vsd, PC_x = 1, PC_y = 2, color_by = "treatment", shape_by = "mutation")
 ```
 
+We can also plot the expression of an individual gene, by either specifying a valid rowname or gene name
+```{r}
+plot_pca(vsd, PC_x = 1, PC_y = 2, color_by = "ENSG00000223972")
+plot_pca(vsd, PC_x = 1, PC_y = 2, color_by = "MTOR")
+```
+
+
 In addition to defining the PCs to plot and variables of interest for color or shape, we can also plot the PC loadings, i.e. the genes driving a principal axis. The `plot_loadings` function offers several options to annotate loadings, e.g. by a column of the `rowData` slot, by highlighting genes of interest or the top genes of a principal axis. It is also helpful to investigate if principal axes are driven by the genes GC content, indicating a potentially sequencing related effect. 
 ```{r}
 pca_res <- plot_pca(vsd, show_plot = FALSE)
@@ -166,7 +173,6 @@ To investigate multiple PCs simultaneously, we can also make a matrix of scatter
 plot_pca_scatters(vsd, n_PCs = 5, color_by = "treatment", shape_by = "mutation")
 ```
 
-
 # Differential expression
 
 Differential expression analysis is one of the most common tasks for investigating RNA-seq data and can be also used for quality assessment. Before doing differential testing, we start by actually plotting the expression pattern of interesting genes.
@@ -178,7 +184,7 @@ Sometimes one has prior knowledge of which genes should be differentially expres
 dds <- estimateSizeFactors(dds)
 plot_gene("CLEC2B", dds, x_var = "mutation", color_by = "treatment")
 # modify the plot
-plot_gene("CLEC2B", dds, x_var = "mutation", color_by = "treatment", show_plot = F)$plot + ggsci::scale_color_jco()
+plot_gene("CLEC2B", dds, x_var = "mutation", color_by = "treatment", show_plot = F)$plot + scale_color_manual(values=c("orange","blue3"))
 # a custom plot type
 plot_data <- plot_gene("CLEC2B", dds, show_plot = F)$data
 plot_data %>%

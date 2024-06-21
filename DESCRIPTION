@@ -9,21 +9,38 @@ Description: Functions for semi-automated quality control of bulk RNA-seq data.
 License: Apache License (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
-Depends: R (>= 4.0)
-Imports: AnnotationHub, AnnotationFilter, ensembldb, circlize, DESeq2,
-        SummarizedExperiment, vsn, ComplexHeatmap, matrixStats, grid,
-        ggpointdensity, ggrepel, gghighlight, ggplot2, ggsci, cowplot,
-        patchwork, purrr, dplyr, stringr, tidyr, tibble, RColorBrewer,
-        tidyselect, magrittr
-Suggests: rmarkdown, knitr, recount3, apeglm
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Depends: 
+    R (>= 4.0)
+Imports: 
+    AnnotationHub,
+    AnnotationFilter,
+    BiocGenerics,
+    ensembldb,
+    circlize,
+    DESeq2,
+    SummarizedExperiment,
+    ComplexHeatmap,
+    matrixStats,
+    grid,
+    ggpointdensity,
+    ggrepel,
+    ggplot2,
+    cowplot,
+    patchwork,
+    purrr,
+    dplyr,
+    stringr,
+    tidyr,
+    tibble,
+    tidyselect,
+    magrittr
+Suggests: 
+    rmarkdown,  
+    knitr,
+    recount3,
+    apeglm,
+    ggrastr,
+    gghighlight
 VignetteBuilder: knitr
-NeedsCompilation: no
-Packaged: 2022-06-15 09:12:22 UTC; fxz40010
-Author: Frederik Ziebell [aut, cre] (<https://orcid.org/0000-0003-3673-1721>),
-  GlaxoSmithKline Research & Development Limited [cph] (GlaxoSmithKline
-    Research & Development Limited; registered address: 980 Great West
-    Road, Brentford, Middlesex TW8 9GS, United Kingdom)
-Maintainer: Frederik Ziebell <frederik.x.ziebell@gsk.com>
-Repository: CRAN
-Date/Publication: 2022-06-15 09:50:06 UTC

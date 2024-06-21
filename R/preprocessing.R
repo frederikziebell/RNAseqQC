@@ -1,6 +1,7 @@
 #' Make DESeqDataSet from counts matrix and metadata
 #'
-#' @param counts The genes x samples counts matrix. The row names must be ENSEMBL gene IDs.
+#' @param counts The genes x samples counts matrix with row names. At least one row name must be an ENSEMBL gene ID,
+#' since gene annotation is done via the ENSEMBL database.
 #' @param metadata data.frame of sample information. Order of rows corresponds to the order of columns in the counts matrix.
 #' @param ah_record ID of AnnotationHub record used to retrieve an `EnsDb` object.
 #' @param design The design formula specified in `DESeqDataSet()`
@@ -25,22 +26,27 @@
 #' @export
 make_dds <- function(counts, metadata, ah_record, design = ~1) {
 
-  # prevent 'no visible binding for global variable' package warnings
-  seqnames <- gene_id <- gene_name <- tx_id <- gc_content <- gene_biotype <- chromosome <- start <- NULL
-
   if (ncol(counts) != nrow(metadata)) {
     stop("The number columns in 'counts' does not equal the number of metadata rows.")
   }
 
-  if (is.null(colnames(counts))) {
-    stop("Matrix 'counts' must have column names.")
-  }
+  # if (is.null(colnames(counts))) {
+  #   stop("Matrix 'counts' must have column names.")
+  # }
 
   if (is.null(rownames(counts))) {
     stop("Matrix 'counts' must have row names.")
-  } else if (!all(str_detect(rownames(counts), "^ENS"))) {
-    stop("Rownames of matrix 'counts' must be ENSEMBL gene IDs.")
+  } else if (!any(str_detect(rownames(counts), "^ENS"))) {
+    stop("At least one rowname of matrix 'counts' must be an ENSEMBL gene ID. \n
+         Otherwise, no gene can be annotated and it is better to use DESeq2::DESeqDataSetFromMatrix() directly.")
   }
+
+  # remove version numbers from ENSEMBL IDs
+  rownames(counts) <- ifelse(
+    stringr::str_detect(rownames(counts),"^ENS"),
+    stringr::str_replace(rownames(counts),"\\.[:digit:]*$",""),
+    rownames(counts)
+  )
 
   # load gene information, that will be stored in rowData slot
   suppressMessages({
@@ -61,7 +67,7 @@ make_dds <- function(counts, metadata, ah_record, design = ~1) {
   ensembl_info <- left_join(ensembl_info, gc_info, by="gene_id")
 
   not_annotated_genes <- setdiff(rownames(counts), ensembl_info$gene_id)
-  if (length(not_annotated_genes)) {
+  if (length(not_annotated_genes)>0) {
     message(paste0("There are ", length(not_annotated_genes), " gene IDs that could not be annotated."))
   }
 
@@ -109,5 +115,14 @@ filter_genes <- function(dds, min_count = 5, min_rep = 3) {
 #' }
 #' @export
 mean_sd_plot <- function(vsd) {
-  vsn::meanSdPlot(assay(vsd), plot = FALSE)$gg + cowplot::theme_cowplot()
+
+  data.frame(
+    gene_mean = matrixStats::rowMeans2(assay(vsd)),
+    gene_sd = matrixStats::rowSds(assay(vsd))
+  ) %>%
+    ggplot(aes(rank(gene_mean), gene_sd)) +
+      ggpointdensity::geom_pointdensity() +
+      cowplot::theme_cowplot() +
+      geom_smooth(color = "red", method = "gam", formula = y ~ s(x, bs = "cs")) +
+      labs(x = "rank(mean)", y = "sd")
 }
