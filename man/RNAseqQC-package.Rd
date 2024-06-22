@@ -8,8 +8,21 @@
 \description{
 Functions for semi-automated quality control of bulk RNA-seq data.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/frederikziebell/RNAseqQC}
+  \item Report bugs at \url{https://github.com/frederikziebell/RNAseqQC/issues}
+}
+
+}
 \author{
-\strong{Maintainer}: Frederik Ziebell \email{frederik.x.ziebell@gsk.com} (\href{https://orcid.org/0000-0003-3673-1721}{ORCID})
+\strong{Maintainer}: Frederik Ziebell \email{f_ziebell@web.de}
+
+Authors:
+\itemize{
+  \item Frederik Ziebell \email{frederik.x.ziebell@gsk.com} (\href{https://orcid.org/0000-0003-3673-1721}{ORCID})
+}
 
 Other contributors:
 \itemize{

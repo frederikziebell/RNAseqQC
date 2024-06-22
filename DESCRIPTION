@@ -1,12 +1,10 @@
 Package: RNAseqQC
 Title: Quality Control for RNA-Seq Data
-Version: 0.1.4
+Version: 0.2.0
 Authors@R: c(
-    person("Frederik", "Ziebell", "f_ziebell@web.de", role = "cre"),
-    person("Frederik", "Ziebell", "frederik.x.ziebell@gsk.com", role = "aut",
-           comment = c(ORCID = "0000-0003-3673-1721")),
-    person("GlaxoSmithKline Research & Development Limited", role = "cph",
-           comment = "GlaxoSmithKline Research & Development Limited; registered address: 980 Great West Road, Brentford, Middlesex TW8 9GS, United Kingdom")
+    person("Frederik", "Ziebell", email="f_ziebell@web.de", role = "cre"),
+    person("Frederik", "Ziebell", email="frederik.x.ziebell@gsk.com", role = "aut", comment = c(ORCID = "0000-0003-3673-1721")),
+    person("GlaxoSmithKline Research & Development Limited", role = "cph", comment = "GlaxoSmithKline Research & Development Limited; registered address: 980 Great West Road, Brentford, Middlesex TW8 9GS, United Kingdom")
   )
 Description: Functions for semi-automated quality control of bulk RNA-seq data.
 License: Apache License (>= 2)
