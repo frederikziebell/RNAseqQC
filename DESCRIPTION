@@ -47,3 +47,5 @@ Suggests:
     ggrastr,
     gghighlight
 VignetteBuilder: knitr
+URL: https://github.com/frederikziebell/RNAseqQC
+BugReports: https://github.com/frederikziebell/RNAseqQC/issues
