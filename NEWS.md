@@ -1,7 +1,7 @@
 # RNAseqQC 0.2
 * Add the possibility to plot gene expression in plot_pca()
 * plot_pca() and plot_pca_scatters() now detect if the variable to color by is
-continuous or discrete and choose an appropriate, colorblind friendly color scale
+continuous or discrete and chooses an appropriate, colorblind friendly color scale
 * Add option to plot rasterised points in plot_pca_scatters()
 * It is now possible to plot squared loadings in the plot_loadings() function
 * Fix a bug where the distance parameter was ignored in plot_sample_clustering()
