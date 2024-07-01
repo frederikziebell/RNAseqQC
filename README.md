@@ -1,6 +1,11 @@
 # RNAseqQC
 
 <!-- badges: start -->
+[![](https://www.r-pkg.org/badges/version/RNAseqQC?color=green)](https://cran.r-project.org/package=RNAseqQC)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/RNAseqQC?color=green)](https://cran.r-project.org/package=RNAseqQC)
+[![](http://cranlogs.r-pkg.org/badges/last-month/RNAseqQC?color=green)](https://cran.r-project.org/package=RNAseqQC)
+[![](http://cranlogs.r-pkg.org/badges/last-week/RNAseqQC?color=green)](https://cran.r-project.org/package=RNAseqQC)
+[![R build status](https://github.com/frederikziebell/RNAseqQC/workflows/R-CMD-check/badge.svg)](https://github.com/frederikziebell/RNAseqQC/actions)
 <!-- badges: end -->
 
 The goal of RNAseqQC is to aid quality control of RNAseq data by providing a 
