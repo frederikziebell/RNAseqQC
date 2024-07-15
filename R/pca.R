@@ -1,21 +1,25 @@
-#' for a character vector x,
+#' for a vector x,
 #' check if all non-NA elements of x
 #' can be converted to numeric
-#' @param x A character vector
+#' @param x A non-numeric vector
 all_numeric <- function(x){
+
+  if(is.factor(x)){
+    return(FALSE)
+  }
 
   x_no_na <- x[!is.na(x)]
 
   if(length(x_no_na) == 0){
-    FALSE
-  } else {
-
-    suppressWarnings(
-      x_numeric <- as.numeric(x_no_na)
-    )
-
-    all(!is.na(x_numeric))
+    return(FALSE)
   }
+
+  suppressWarnings(
+    x_numeric <- as.numeric(x_no_na)
+  )
+
+  all(!is.na(x_numeric))
+
 }
 
 .compute_pca <- function(obj, n_feats, scale_feats, na_frac, metadata, color_by){
