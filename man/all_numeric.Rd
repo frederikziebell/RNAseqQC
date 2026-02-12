@@ -2,17 +2,17 @@
 % Please edit documentation in R/pca.R
 \name{all_numeric}
 \alias{all_numeric}
-\title{for a character vector x,
+\title{for a vector x,
 check if all non-NA elements of x
 can be converted to numeric}
 \usage{
 all_numeric(x)
 }
 \arguments{
-\item{x}{A character vector}
+\item{x}{A non-numeric vector}
 }
 \description{
-for a character vector x,
+for a vector x,
 check if all non-NA elements of x
 can be converted to numeric
 }

@@ -18,6 +18,7 @@ plot_pca_scatters(
   point_rel_size = 2,
   transpose = FALSE,
   rasterise = FALSE,
+  se_assay = 1,
   ...
 )
 }
@@ -48,6 +49,8 @@ Alternatively, it can be the name of a feature (a rowname of obj) or a gene name
 \item{transpose}{Wheter to transpose the whole matrix of scatter plots}
 
 \item{rasterise}{Whether to rasterise the points using ggrastr.}
+
+\item{se_assay}{If \code{obj} is a SummarizedExperiment, the name or number of the assay matrix to plot}
 
 \item{...}{Other parameters passed on to ggrastr::rasterise}
 }

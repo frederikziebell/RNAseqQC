@@ -22,10 +22,11 @@ all_numeric <- function(x){
 
 }
 
-.compute_pca <- function(obj, n_feats, scale_feats, na_frac, metadata, color_by){
+.compute_pca <- function(obj, n_feats, scale_feats, na_frac, metadata, color_by, se_assay){
 
   if (inherits(obj, "SummarizedExperiment")) {
-    mat <- tryCatch(as.matrix(assay(obj)), error = function(e) {
+    assay_obj <- assay(obj, i = se_assay)
+    mat <- tryCatch(as.matrix(assay_obj), error = function(e) {
       stop("Assay cannot be converted to a matrix.")
     })
     col_data <- as_tibble(colData(obj))
@@ -190,6 +191,7 @@ all_numeric <- function(x){
 #' @param point_rel_size relative size of `geom_point()`
 #' @param show_plot Whether to show the plot or not
 #' @param rasterise Whether to rasterise the point, using ggrastr.
+#' @param se_assay If `obj` is a SummarizedExperiment, the name or number of the assay matrix to plot
 #' @param ... Other parameters passed on to ggrastr::rasterise
 #'
 #' @examples
@@ -209,12 +211,14 @@ plot_pca <- function(obj,
   n_feats = 500, scale_feats = FALSE, na_frac = .3,
   metadata = NULL, color_by = NULL, shape_by = NULL,
   point_alpha = .7, point_rel_size = 2,
-  show_plot = TRUE, rasterise = FALSE, ...
+  show_plot = TRUE, rasterise = FALSE, 
+  se_assay = 1, ...
   ) {
 
   pca_res <- .compute_pca(
     obj = obj, n_feats = n_feats, scale_feats = scale_feats,
-    na_frac = na_frac, metadata = metadata, color_by = color_by
+    na_frac = na_frac, metadata = metadata, color_by = color_by,
+    se_assay = se_assay
   )
 
   plot <- .make_pca_plot(
@@ -359,6 +363,7 @@ plot_loadings <- function(pca_res, PC = 1, square = FALSE, color_by = NULL, anno
 #' @param point_rel_size relative size of `geom_point()`
 #' @param transpose Wheter to transpose the whole matrix of scatter plots
 #' @param rasterise Whether to rasterise the points using ggrastr.
+#' @param se_assay If `obj` is a SummarizedExperiment, the name or number of the assay matrix to plot
 #' @param ... Other parameters passed on to ggrastr::rasterise
 #'
 #' @examples
@@ -372,11 +377,13 @@ plot_loadings <- function(pca_res, PC = 1, square = FALSE, color_by = NULL, anno
 #' @export
 plot_pca_scatters <- function(obj,
                               n_PCs = min(10,nrow(obj),ncol(obj)), show_var_exp = T, n_feats = 500, scale_feats = FALSE, na_frac = 0.3,
-                              metadata = NULL, color_by = NULL, shape_by = NULL, point_alpha = 0.7, point_rel_size = 2, transpose = FALSE, rasterise = FALSE, ...){
+                              metadata = NULL, color_by = NULL, shape_by = NULL, point_alpha = 0.7, point_rel_size = 2, transpose = FALSE, rasterise = FALSE, 
+                              se_assay = 1, ...){
 
   pca_res <- .compute_pca(
     obj = obj, n_feats = n_feats, scale_feats = scale_feats,
-    na_frac = na_frac, metadata = metadata, color_by = color_by
+    na_frac = na_frac, metadata = metadata, color_by = color_by,
+    se_assay = se_assay
   )
 
   # all pairwise combinations

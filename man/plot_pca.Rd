@@ -18,6 +18,7 @@ plot_pca(
   point_rel_size = 2,
   show_plot = TRUE,
   rasterise = FALSE,
+  se_assay = 1,
   ...
 )
 }
@@ -48,6 +49,8 @@ Alternatively, it can be the name of a feature (a rowname of obj) or a gene name
 \item{show_plot}{Whether to show the plot or not}
 
 \item{rasterise}{Whether to rasterise the point, using ggrastr.}
+
+\item{se_assay}{If \code{obj} is a SummarizedExperiment, the name or number of the assay matrix to plot}
 
 \item{...}{Other parameters passed on to ggrastr::rasterise}
 }
