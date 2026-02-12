@@ -1,6 +1,6 @@
 Package: RNAseqQC
 Title: Quality Control for RNA-Seq Data
-Version: 0.2.1
+Version: 0.2.1.9000
 Authors@R: c(
     person("Frederik", "Ziebell", email="f_ziebell@web.de", role = "cre"),
     person("Frederik", "Ziebell", email="frederik.x.ziebell@gsk.com", role = "aut", comment = c(ORCID = "0000-0003-3673-1721")),

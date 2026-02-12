@@ -1,3 +1,6 @@
+# RNAseqQC (development version)
+* Add the possibility to plot different assays in plot_pca() when obj is a SummarizedExperiment
+
 # RNAseqQC 0.2.1
 
 # RNAseqQC 0.2
