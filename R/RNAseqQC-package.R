@@ -7,7 +7,7 @@
 #' @importFrom dplyr arrange mutate group_by left_join filter rename select summarize pull ungroup bind_cols row_number
 #' @importFrom tibble as_tibble column_to_rownames tibble enframe
 #' @importFrom magrittr %>%
-#' @importFrom purrr map map_dbl map_dfr
+#' @importFrom purrr map map_dbl map_dfr walk
 #' @importFrom tidyr pivot_longer pivot_wider
 #' @importFrom stringr str_sort str_c str_detect
 #' @importFrom ggplot2 ggplot aes geom_point geom_line element_text element_line
