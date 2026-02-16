@@ -47,6 +47,7 @@ plot_sample_ecdfs <- function(se, se_assay = 1, n_steps = 100, line_alpha = .2, 
     data = data.frame(x = seq(min_val, max_val, length.out = n_steps)),
     mapping = aes(x = x)
   ) +
+    labs(y = "ECDF") +
     cowplot::theme_cowplot()
   
   if(!is.null(group)){
